@@ -1,0 +1,7 @@
+env/
+inventory/__pycache__
+erp_system/__pycache__
+inventory/migrations/__pycache__
+db.sqlite3
+erp
+*.pyc
