@@ -18,6 +18,10 @@ class AdminUser(models.Model):
     def __str__(self):
         return f"{self.first_name} {self.last_name} ({self.login_id})"
     
+    class Meta:
+        managed=True
+        db_table_comment = 'users'
+    
 class TransactionPartner(models.Model):
     partner_id = models.AutoField(primary_key=True)
     partner_name = models.CharField(max_length=50,null=False)
@@ -38,6 +42,25 @@ class TransactionPartner(models.Model):
 
     def __str__(self):
         return f"{self.partner_name} ({self.get_partner_type_display()})"
+    
+    class Meta:
+        managed=True
+        db_table_comment = 'Adding partners'
+    
+class Retailer(models.Model):
+    retailer_id = models.AutoField(primary_key=True)
+    retailer_name = models.CharField(max_length=30)
+    mobile = models.CharField(max_length=15)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey(AdminUser,on_delete=models.CASCADE,related_name='retailerCreatedBy')    
+
+    def __str__(self):
+        return f"{self.retailer_name}"
+
+    class Meta:
+        managed=True
+        db_table_comment = 'Adding retailers'
 
 
 
