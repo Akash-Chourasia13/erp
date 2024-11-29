@@ -19,14 +19,12 @@ from inventory import views
 from rest_framework import routers
 
 router = routers.DefaultRouter()
-
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('inventory/', include('inventory.urls')),
-    # path("",views.productlistViewSet,name="productlistViewSet")
+    # path('inventory/', include('inventory.urls')),
+    path('useradmin/', include('useradmin.urls')),
+    path('product/', include('product.urls'))
 ]
-
-# router.register(r"", views.productlistViewSet, basename="productlistViewSet")
 
 urlpatterns += router.urls
 
