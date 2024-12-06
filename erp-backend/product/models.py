@@ -10,6 +10,7 @@ class Product(models.Model):
     product_name = models.CharField(max_length=50,unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey(AdminUser,on_delete=models.CASCADE,related_name='productCreatedBy')
 
     def __str__(self):
         return f"{self.product_name}"
@@ -23,6 +24,7 @@ class Brand(models.Model):
     brand_name = models.CharField(max_length=30,unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey(AdminUser,on_delete=models.CASCADE,related_name='brandCreatedBy')
 
     def __str__(self):
         return f"{self.brand_name}"
@@ -36,6 +38,7 @@ class Color(models.Model):
     color_name = models.CharField(max_length=30)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey(AdminUser,on_delete=models.CASCADE,related_name='colorCreatedBy')
 
     def __str__(self):
         return f"{self.color_name}"
@@ -49,6 +52,7 @@ class ProductModel(models.Model):
     model_name = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey(AdminUser,on_delete=models.CASCADE,related_name='modelCreatedBy')
 
     def __str__(self):
         return f"{self.model_name}"

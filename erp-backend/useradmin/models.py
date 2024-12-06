@@ -3,9 +3,8 @@ from django.db import models
 # Create your models here.
 class AdminUser(models.Model):
     user_id = models.AutoField(primary_key=True,db_column='user_id')
-    login_id = models.CharField(max_length=30,db_column='login_id',unique=True)
-    password = models.CharField(max_length=120)
     email_id = models.CharField(max_length=120,unique=True)
+    password = models.CharField(max_length=120)
     first_name = models.CharField(max_length=60,null=False,blank=False)
     last_name = models.CharField(max_length=60,blank=True,null=True)
     role_choices = [
@@ -14,6 +13,8 @@ class AdminUser(models.Model):
     ]
     role = models.PositiveSmallIntegerField(choices=role_choices,default=0)
     mobile_number = models.CharField(max_length=15,null=False)
+    business_name = models.CharField(max_length=40,default='')
+    parent_business = models.ForeignKey('AdminUser',on_delete=models.CASCADE,related_name='parentBusiness',null=True,blank=True)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} ({self.login_id})"

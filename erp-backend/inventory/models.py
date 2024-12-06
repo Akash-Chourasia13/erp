@@ -58,6 +58,8 @@ class Inventory(models.Model):
     final_amount = models.DecimalField(max_digits=30,decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey(AdminUser,on_delete=models.CASCADE,related_name='InventoryCreatedBy')
+
 
 class Invoice(models.Model):
     Entity_Type_Choices = [('TransactionPartner', ' Transaction Partner'),('Retailer', 'Retailer')]
