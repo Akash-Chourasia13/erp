@@ -1,7 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Register from './components/Register';
-import login from './components/login';
+import Login from './components/Login';
+import Partner from './components/Partner';
 
 
 export default function AppRoutes(){
@@ -9,7 +10,8 @@ export default function AppRoutes(){
         <Router>
             <Routes>
                 <Route path='/register' element={<Register />} />
-                <Route path='/login' element={<login />} />
+                <Route path='/login' element={<Login />} />
+                <Route path='/addPartner' element={<Partner />} />
             </Routes>
         </Router>
     )

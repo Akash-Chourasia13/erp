@@ -3,7 +3,7 @@ import { Container,Row,Col,Form,Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { loginUser } from '../apiEndpoints/LocalApi';
 
-export default function login(){
+export default function Login(){
     const [loginForm,setLoginForm] = useState({
         email:"",
         password:"",
@@ -16,9 +16,10 @@ export default function login(){
         })
     };
     const handleSubmit = async(e) => {
+        e.preventDefault();
         try{
-        const response = await(loginUser(loginForm));
-        console.log(response.data)
+            const response = await loginUser(loginForm);
+            // console.log(response)
         }catch(error){console.error(error)}
     }
     return(
@@ -38,7 +39,7 @@ export default function login(){
                                 onChange={handleChange}
                             ></Form.Control>
                         </Form.Group>
-                        <Formm.Group>
+                        <Form.Group>
                             <Form.Label>Password</Form.Label>
                             <Form.Control
                             type='password'
@@ -47,7 +48,7 @@ export default function login(){
                             value={loginForm.password}
                             onChange={handleChange}
                             ></Form.Control>
-                        </Formm.Group>
+                        </Form.Group>
                         <Button
                             variant='primary'
                             type='submit'

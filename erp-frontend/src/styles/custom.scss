@@ -1,0 +1,10 @@
+// custom.scss
+$theme-colors: (
+  "primary": #ADD8E6, // Light blue for primary color
+  "secondary": #FFFFFF // White for secondary color
+);
+
+$body-bg: #FFFFFF; // White background
+$body-color: #000000; // Black text color
+
+@import "bootstrap/scss/bootstrap";
