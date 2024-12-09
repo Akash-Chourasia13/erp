@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 import { createPartner } from '../apiEndpoints/LocalApi'
+import Navigation from './Navigation';
 
 export default function Partner(){
     const [formPartner,setFormPartner] = useState({
@@ -77,6 +78,7 @@ export default function Partner(){
     
     return(
         <>
+          <Navigation />
           <Container>
             <Row className='justify-content-center'>
                 <Col md={6}>

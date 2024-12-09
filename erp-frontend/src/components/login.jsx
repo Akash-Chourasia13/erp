@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Container,Row,Col,Form,Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { loginUser } from '../apiEndpoints/LocalApi';
+import Partner from './Partner';
 
 export default function Login(){
+    let navigate = useNavigate();
     const [loginForm,setLoginForm] = useState({
         email:"",
         password:"",
@@ -19,7 +21,14 @@ export default function Login(){
         e.preventDefault();
         try{
             const response = await loginUser(loginForm);
-            // console.log(response)
+            console.log("Response from loginUser:", response);
+            console.log("Response status:", response?.status); // Check the status here
+            if (response?.status === 200) {
+                console.log("Login successful, navigating to /addPartner");
+                navigate('/addPartner');
+            } else {
+                console.log("Login failed, status:", response?.status);
+            }
         }catch(error){console.error(error)}
     }
     return(

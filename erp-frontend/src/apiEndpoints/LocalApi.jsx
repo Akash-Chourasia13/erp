@@ -79,7 +79,10 @@ export const loginUser = async(loginData) => {
         localStorage.setItem('access_token',access);
         localStorage.setItem('refresh_token',refresh);
         console.log('Login Successful!');
-        return response.data;
+        return {
+            data: response.data,
+            status: response.status,
+        };
     }catch(error){console.error('Login Failed',error);
         throw error;
     }

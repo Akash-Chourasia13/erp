@@ -11,9 +11,6 @@ import Partner from './components/Partner';
 function App() {
   return (
     <>
-      {/* <Navigation /> */}
-      {/* <Partner />
-      <Login /> */}
       <AppRoutes />
     </>
   );
