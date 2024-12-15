@@ -27,6 +27,7 @@ urlpatterns = [
     # path('inventory/', include('inventory.urls')),
     path('useradmin/', include('useradmin.urls')),
     path('product/', include('product.urls')),
+    path('inventory/',include('inventory.urls')),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]

@@ -2,11 +2,12 @@ from django.shortcuts import render
 from rest_framework import viewsets,status
 from .serializers import TransactionPartnerSerializer,AdminUserSerializer
 from rest_framework.response import Response
-from .models import AdminUser
+from .models import AdminUser,TransactionPartner
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import AllowAny,IsAuthenticated
 import re
+from django.http import JsonResponse
 
 class AdminUserViewSet(viewsets.ViewSet):
     permission_classes = [AllowAny]  # Override default permissions
@@ -91,6 +92,14 @@ class addPartnersViewSet(viewsets.ViewSet):
             print("Serializer Errors:", partner_serializer.errors)
             return Response(partner_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+class getPartnersViewSet(viewsets.ViewSet):
+    permission_classes = [IsAuthenticated]
+    def list(self,request):
+        sellerObj = TransactionPartner.objects.all()
+        result = TransactionPartnerSerializer(sellerObj,many=True)
+        print(result.data)
+        return Response(result.data,status=status.HTTP_200_OK)
 
 
 

@@ -70,6 +70,11 @@ export const createPartner = (formPartner) => {
     return axiosInstance.post('useradmin/addPartner/',formPartner);
 }; 
 
+//Get Request for getting the partners
+export const getPartners = () => {
+    return axiosInstance.get('useradmin/getPartner/');
+};
+
 // Post Request for login in
 export const loginUser = async(loginData) => {
     try{

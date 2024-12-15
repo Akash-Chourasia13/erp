@@ -63,7 +63,7 @@ class Inventory(models.Model):
 
 class Invoice(models.Model):
     Entity_Type_Choices = [('TransactionPartner', ' Transaction Partner'),('Retailer', 'Retailer')]
-    inoice_id = models.AutoField(primary_key=True)
+    invoice_id = models.AutoField(primary_key=True)
     entity_type = models.ForeignKey(ContentType,on_delete=models.CASCADE)
     entity_id = models.PositiveIntegerField()
     entity = GenericForeignKey('entity_type','entity_id')
@@ -82,7 +82,7 @@ class Invoice(models.Model):
 
 
     def __str__(self):
-        return f'Invoice{self.inoice_id} - {self.entityType}'
+        return f'Invoice{self.invoice_id} - {self.entityType}'
     def save(self,*args,**kwargs):
         if self.entity_type:
             if self.entity_type.model == 'TransactionPartner':
