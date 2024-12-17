@@ -9,10 +9,11 @@ from rest_framework.decorators import action
 class ProductViewSet(viewsets.ViewSet):
     def create(self,request):
         product_details = request.data.copy()
+        product_details['created_by'] = request.user.id
         product_serializer = ProductSerializer(data=product_details)
         if product_serializer.is_valid():
             product_serializer.save()
-            return Response({'success':'Product is added successfully'},status=status.HTTP_201_CREATED)
+            return Response(product_serializer.data,status=status.HTTP_201_CREATED)
         else:
             print(product_serializer.errors)
             return Response(product_serializer.errors,status=status.HTTP_400_BAD_REQUEST)
@@ -32,14 +33,27 @@ class ProductViewSet(viewsets.ViewSet):
             # print(e)  
             return Response({"error":str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)  
 
+class getProductViewSet(viewsets.ViewSet):
+    def list(self,request):
+        productsObjs = Product.objects.all()
+        productSerializer = ProductSerializer(productsObjs,many=True)
+        return Response(productSerializer.data,status=status.HTTP_200_OK)
+
+class getBrandViewSet(viewsets.ViewSet):
+    def list(self,request):
+        brandObjs = Brand.objects.all()
+        brandSerializer = BrandSerializer(brandObjs,many=True)
+        return Response(brandSerializer.data,status=status.HTTP_200_OK)
 
 class BrandViewSet(viewsets.ViewSet):
     def create(self,request):
         brand_details = request.data.copy()
+        print(brand_details)
+        brand_details['created_by'] = request.user.id
         brand_serializer = BrandSerializer(data=brand_details)
         if brand_serializer.is_valid():
             brand_serializer.save()
-            return Response({'Success':'Brand is added successfully'},status=status.HTTP_201_CREATED)
+            return Response(brand_serializer.data,status=status.HTTP_201_CREATED)
         else:
             return Response(brand_serializer.errors,status=status.HTTP_400_BAD_REQUEST)
     # use patch request for this partial_update func    
@@ -57,13 +71,20 @@ class BrandViewSet(viewsets.ViewSet):
         except Exception as e:
             return Response({"error":str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+class getColorViewSet(viewsets.ViewSet):
+    def list(self,request):
+        colorObjs = Color.objects.all()
+        colorSerializer = ColorSerializer(colorObjs,many=True)
+        return Response(colorSerializer.data,status=status.HTTP_200_OK)
+
 class ColorViewSet(viewsets.ViewSet):
     def create(Self,request):
         color_details = request.data.copy()
+        color_details['created_by'] = request.user.id
         color_serializer = ColorSerializer(data=color_details)
         if color_serializer.is_valid():
             color_serializer.save()
-            return Response({'success':"Color is added Successfully"},status=status.HTTP_201_CREATED)
+            return Response(color_serializer.data,status=status.HTTP_201_CREATED)
         else:
             return Response({f'"error":str({color_serializer.errors})'},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     # use patch request for this partial_update func    
@@ -79,14 +100,22 @@ class ColorViewSet(viewsets.ViewSet):
             return Response({"Failed":"Color Not Found"},status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({"Error":str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
+
+class getProductModelViewSet(viewsets.ViewSet):
+    def list(self,request):
+        modelObjs = ProductModel.objects.all()
+        modelSerializer = ProductModelSerializer(modelObjs,many=True)
+        return Response(modelSerializer.data,status=status.HTTP_200_OK)
+
+
 class ProductModelViewSet(viewsets.ViewSet):
     def create(self,request):
         model_details = request.data.copy()
+        model_details['created_by'] = request.user.id
         model_serializer = ProductModelSerializer(data=model_details)
         if model_serializer.is_valid():
             model_serializer.save()
-            return Response({"Success":"Model is added Successfully"},status=status.HTTP_200_OK)
+            return Response(model_serializer.data,status=status.HTTP_200_OK)
         else:
             return Response({f'"Failure":str({model_serializer.errors})'},status=status.HTTP_500_INTERNAL_SERVER_ERROR) 
     # use patch request for this partial_update func    

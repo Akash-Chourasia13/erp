@@ -70,10 +70,51 @@ export const createPartner = (formPartner) => {
     return axiosInstance.post('useradmin/addPartner/',formPartner);
 }; 
 
+//Post Request for creating a new Product
+export const createProduct = (newValue) => {
+    return axiosInstance.post('product/addProduct/',newValue);
+};
+
+//Get Request for getting the brands
+export const getBrands = () => {
+    return axiosInstance.get('product/getBrand/');
+};
+
+//Post Request for creating a new Brand
+export const createBrand = (newValue) => {
+    return axiosInstance.post('product/addBrand/',newValue);
+};
+
+//Get Request for getting the models
+export const getModels = () => {
+    return axiosInstance.get('product/getModel/');
+};
+
+//Post Request for creating a new Model
+export const createModel = (newValue) => {
+    return axiosInstance.post('product/addModel/',newValue);
+};
+
+//Get Request for getting the Colors
+export const getColors = () => {
+    return axiosInstance.get('product/getColor/');
+};
+
+//Post Request for creating a new Color
+export const createColor = (newValue) => {
+    return axiosInstance.post('product/addColor/',newValue);
+};
+
 //Get Request for getting the partners
 export const getPartners = () => {
     return axiosInstance.get('useradmin/getPartner/');
 };
+
+//Get Request for getting the products
+export const getProducts = () => {
+    return axiosInstance.get('product/getProduct/');
+};
+
 
 // Post Request for login in
 export const loginUser = async(loginData) => {
