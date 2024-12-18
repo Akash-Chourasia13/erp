@@ -95,6 +95,11 @@ export const createModel = (newValue) => {
     return axiosInstance.post('product/addModel/',newValue);
 };
 
+//Post Request for creating a new Seller Info
+export const sellerInfo = (completeDetail) => {
+    return axiosInstance.post('inventory/addSellerInventory/',completeDetail);
+};
+
 //Get Request for getting the Colors
 export const getColors = () => {
     return axiosInstance.get('product/getColor/');

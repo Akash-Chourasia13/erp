@@ -5,6 +5,7 @@ from .models import SellerInventory
 
 class addSellerInventoryViewSet(viewsets.ViewSet):
     def create(self,request):
-        sellerObj = SellerInventory.objects.all()
-        return Response(sellerObj,status=status.HTTP_200_OK)
+        sellerObj = request.data.copy()
+        print(sellerObj)
+        return Response({'success'},status=status.HTTP_200_OK)
 

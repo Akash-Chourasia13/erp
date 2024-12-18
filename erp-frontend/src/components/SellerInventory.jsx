@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getPartners, getProducts, createProduct, createBrand, getBrands, getModels, createModel, getColors, createColor } from '../apiEndpoints/LocalApi';
+import { getPartners, getProducts, createProduct, createBrand, getBrands, getModels, createModel, getColors, createColor, sellerInfo } from '../apiEndpoints/LocalApi';
 import { Container,Row,Col,Button,Form } from 'react-bootstrap';
 import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
@@ -19,6 +19,17 @@ export default function SellerInventory(){
 
     const [colorList,setColorList] = useState([])
     const [selectedColor,setSelectedColor] = useState(null)
+
+    const [otherVendorDetails,setOtherVendorDetails] = useState({
+        'hsnCode':"",
+        'quantity':"",
+        'unitPrice':"",
+        'grossPrice':"",
+        'discPerc':"",
+        'netPrice':"",
+        'gstPerc':"",
+        'finalAmount':""
+    })
 
 
     const fetchPartners = async() => {
@@ -81,6 +92,27 @@ export default function SellerInventory(){
             console.error("Error creating product:", error);
         }
     };
+
+    const handleChange = async(e) => {
+        const {name,value} = e.target
+
+        // if (name==='quantity' || name==='unitPrice') && (!)
+
+        setOtherVendorDetails((prev)=>{
+            const updatedValue = {...prev,[name]:value}
+            return updatedValue;
+        })
+        console.log(otherVendorDetails)
+    }
+
+    const handleAdd = async(e) => {
+        e.preventDefault();
+        const completeDetail = {...otherVendorDetails,'partnerId':selectedOption.value,'productId':selectedProduct.value,'brandId':selectedBrand.value,'modelId':selectedModel,'colorId':selectedColor}
+        try{
+            const response = await sellerInfo(completeDetail)
+            console.log(response.data)
+        }catch(error){console.log(error)}
+    }
     
     useEffect(() => {
     fetchPartners();
@@ -101,12 +133,12 @@ export default function SellerInventory(){
                 <h1>Add to the Inventory</h1>
                     </Col>
                 </Row>
+                <Form className='d-flex'>
                 <Row>
-                    <Col md={6} className="d-flex justify-content">
-                        <Form className="d-flex">
+                    <Col md={12} className="d-flex justify-content">
                             <Select 
                                options={partnerList}
-                               placeholder="Select Partner"
+                               placeholder="Select Vendor"
                                value={selectedOption}
                                onChange={(selected) => {setSelectedOption(selected)}}
                                isClearable
@@ -114,12 +146,12 @@ export default function SellerInventory(){
                             <Form.Group>
                                 <Form.Control disabled className="ms-2" value={selectedOption?.value||""} />
                             </Form.Group>
-                        </Form>
                     </Col>
                 </Row>
+                </Form>
+                <Form className='d-flex'>
                 <Row>
-                    <Col md={6} className="d-flex justify-content">
-                        <Form className='d-flex'>
+                    <Col md={12} className="d-flex justify-content">
                             <CreatableSelect 
                                 options={productList}
                                 placeholder="Select Product"
@@ -128,12 +160,10 @@ export default function SellerInventory(){
                                 onCreateOption={(newValue) => {handleCreate(newValue,createProduct,setProductList,{idKey:'product_id',nameKey:'product_name'},setSelectedProduct)}}
                                 isClearable
                             />
-                        </Form>
                     </Col>
                 </Row>
                 <Row>
-                <Col md={6} className="d-flex justify-content">
-                    <Form className='d-flex'>
+                <Col md={12} className="d-flex justify-content">
                         <CreatableSelect 
                             options={brandList}
                             placeholder='Select Brand'
@@ -142,12 +172,10 @@ export default function SellerInventory(){
                             onCreateOption={(newValue) => {handleCreate(newValue,createBrand,setBrandList,{idKey:'brand_id',nameKey:'brand_name'},setSelectedBrand)}}
                             isClearable
                         />
-                    </Form>
                     </Col>
                 </Row>
                 <Row>
-                    <Col  md={6} className="d-flex justify-content">
-                    <Form className='d-flex'>
+                    <Col  md={12} className="d-flex justify-content">
                         <CreatableSelect 
                             options={modelList}
                             placeholder='Select Model'
@@ -157,12 +185,10 @@ export default function SellerInventory(){
                             isClearable
                         />
 
-                    </Form>
                     </Col>
                 </Row>
                 <Row>
-                <Col  md={6} className="d-flex justify-content">
-                <Form className='d-flex'>
+                <Col md={12} className="d-flex justify-content">
                     <CreatableSelect 
                         options={colorList}
                         placeholder='Select Color'
@@ -170,9 +196,66 @@ export default function SellerInventory(){
                         onChange={(selected) => {setSelectedColor(selected)}}
                         onCreateOption={(newValue) => {handleCreate(newValue,createColor,setColorList,{idKey:'color_id',nameKey:'color_name'},setSelectedColor)}}
                     />
-                </Form>
                 </Col>
                 </Row>
+                <Row>
+                    <Col md={12} className="d-flex justify-content">
+                        <Form.Group controlId='formHsnCode'>
+                            <Form.Control type='text' placeholder='Enter Hsn Code' name='hsnCode' value={otherVendorDetails.hsnCode} onChange={handleChange}/>
+                        </Form.Group>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col md={12} className="d-flex justify-content">
+                        <Form.Group controlId='formQuantity'>
+                            <Form.Control type='number' placeholder='Enter Quantity' name='quantity' value={otherVendorDetails.quantity} onChange={handleChange}/>
+                        </Form.Group>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col md={12} className="d-flex justify-content">
+                        <Form.Group controlId='formUnitPrice'>
+                            <Form.Control type='number' placeholder='Enter Unit Price' name='unitPrice' value={otherVendorDetails.unitPrice} onChange={handleChange}/>
+                        </Form.Group>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col md={12} className="d-flex justify-content">
+                        <Form.Group controlId='formGrossPrice'>
+                            <Form.Control type='number'  placeholder='Gross Price' name='grossPrice' value={otherVendorDetails.grossPrice} onChange={handleChange}/>
+                        </Form.Group>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col md={12} className="d-flex justify-content">
+                        <Form.Group controlId='formDiscPerc'>
+                            <Form.Control type='number' placeholder='Enter Discount Perc' name='discPerc' value={otherVendorDetails.discPerc} onChange={handleChange}/>
+                        </Form.Group>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col md={12} className="d-flex justify-content">
+                        <Form.Group controlId='formNetPrice'>
+                            <Form.Control type='number'  placeholder='Net Price' name='netPrice' value={otherVendorDetails.netPrice} onChange={handleChange}/>
+                        </Form.Group>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col md={12} className="d-flex justify-content">
+                        <Form.Group controlId='formGstPerc'>
+                            <Form.Control type='number' placeholder='Enter GST Perc' name='gstPerc' value={otherVendorDetails.gstPerc} onChange={handleChange}/>
+                        </Form.Group>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col md={12} className="d-flex justify-content">
+                        <Form.Group controlId='formFinalAmount'>
+                            <Form.Control type='number'  placeholder='Final Amount' name='finalAmount' value={otherVendorDetails.finalAmount} onChange={handleChange}/>
+                        </Form.Group>
+                    </Col>
+                </Row>
+                    <Button variant='primary' className='mt-3' type='submit' onClick={handleAdd}>Add</Button>
+                </Form>
             </Container>
         </>
     )
