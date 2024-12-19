@@ -37,7 +37,7 @@ export default function SellerInventory(){
             const response = await getPartners();
             const partners = response.data
             // Format the partners to match react-select structure (value and label)
-            const formattedPartners = partners.map(partner => ({
+            const formattedPartners = partners.map((partner) => ({
                 value: partner.gst_id, // assuming gst_id is the unique identifier
                 label: partner.partner_name, // assuming partner_name is what you want to display
             }));
@@ -50,10 +50,12 @@ export default function SellerInventory(){
         try{
             const response = await apiFunction();
             const getItems = response.data
+            console.log(getItems,keyMap.idKey,keyMap.nameKey)
             const formattedItems = getItems.map((item) => ({
-                value:item[keyMap.id_key],
+                value:item[keyMap.idKey],
                 label:item[keyMap.nameKey],
             }));
+            console.log(formattedItems)
             setList(formattedItems);
         }catch(error){console.error(error)}
     };
@@ -102,7 +104,7 @@ export default function SellerInventory(){
             const updatedValue = {...prev,[name]:value}
             return updatedValue;
         })
-        console.log(otherVendorDetails)
+        // console.log(otherVendorDetails)
     }
 
     const handleAdd = async(e) => {
@@ -110,7 +112,7 @@ export default function SellerInventory(){
         const completeDetail = {...otherVendorDetails,'partnerId':selectedOption.value,'productId':selectedProduct.value,'brandId':selectedBrand.value,'modelId':selectedModel,'colorId':selectedColor}
         try{
             const response = await sellerInfo(completeDetail)
-            console.log(response.data)
+            // console.log(response.data)
         }catch(error){console.log(error)}
     }
     
@@ -130,7 +132,7 @@ export default function SellerInventory(){
             <Container>
                 <Row>
                 <Col md={8}>
-                <h1>Add to the Inventory</h1>
+                <h1>Add to the Vendor Inventory</h1>
                     </Col>
                 </Row>
                 <Form className='d-flex'>
@@ -140,7 +142,7 @@ export default function SellerInventory(){
                                options={partnerList}
                                placeholder="Select Vendor"
                                value={selectedOption}
-                               onChange={(selected) => {setSelectedOption(selected)}}
+                               onChange={(selected) => {setSelectedOption(selected);console.log(selectedOption)}}
                                isClearable
                             />
                             <Form.Group>
@@ -156,7 +158,7 @@ export default function SellerInventory(){
                                 options={productList}
                                 placeholder="Select Product"
                                 value={selectedProduct}
-                                onChange={(selected) => {setSelectedProduct(selected)}}
+                                onChange={(selected) => {setSelectedProduct(selected);console.log(selectedProduct)}}
                                 onCreateOption={(newValue) => {handleCreate(newValue,createProduct,setProductList,{idKey:'product_id',nameKey:'product_name'},setSelectedProduct)}}
                                 isClearable
                             />
