@@ -3,6 +3,7 @@ import { getPartners, getProducts, createProduct, createBrand, getBrands, getMod
 import { Container,Row,Col,Button,Form } from 'react-bootstrap';
 import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
+import SellerInventoryListing from './SellerInventoryListing'
 
 export default function SellerInventory(){
     const [partnerList,setPartnerList] = useState([])
@@ -38,8 +39,9 @@ export default function SellerInventory(){
             const partners = response.data
             // Format the partners to match react-select structure (value and label)
             const formattedPartners = partners.map((partner) => ({
-                value: partner.gst_id, // assuming gst_id is the unique identifier
+                value: partner.partner_id, // assuming gst_id is the unique identifier
                 label: partner.partner_name, // assuming partner_name is what you want to display
+                gst:partner.gst_id,
             }));
             
             setPartnerList(formattedPartners);
@@ -50,25 +52,25 @@ export default function SellerInventory(){
         try{
             const response = await apiFunction();
             const getItems = response.data
-            console.log(getItems,keyMap.idKey,keyMap.nameKey)
+            // console.log(getItems,keyMap.idKey,keyMap.nameKey)
             const formattedItems = getItems.map((item) => ({
                 value:item[keyMap.idKey],
                 label:item[keyMap.nameKey],
             }));
-            console.log(formattedItems)
+            // console.log(formattedItems)
             setList(formattedItems);
         }catch(error){console.error(error)}
     };
 
     const handleCreate = async (newValue,apiFunction,setList,keyMap,setSelected) => {
         try {
-            console.log("New Value to Create:", newValue);
+            // console.log("New Value to Create:", newValue);
     
             const response = await apiFunction({ [keyMap.nameKey]: newValue });
-            console.log("API Response:", response);
+            // console.log("API Response:", response);
     
             const createdItem = response.data;
-            console.log("Created Product Data:", createdItem);
+            // console.log("Created Product Data:", createdItem);
     
             // Validate the response
             if (!createdItem?.[keyMap.idKey] || !createdItem?.[keyMap.nameKey]) {
@@ -85,7 +87,7 @@ export default function SellerInventory(){
             // Update product list
             setList((prev) => {
                 const updatedList = [...prev, newOption];
-                console.log("Updated Product List:", updatedList);
+                // console.log("Updated Product List:", updatedList);
                 return updatedList;
             });
             setSelected(newOption)
@@ -109,7 +111,7 @@ export default function SellerInventory(){
 
     const handleAdd = async(e) => {
         e.preventDefault();
-        const completeDetail = {...otherVendorDetails,'partnerId':selectedOption.value,'productId':selectedProduct.value,'brandId':selectedBrand.value,'modelId':selectedModel,'colorId':selectedColor}
+        const completeDetail = {...otherVendorDetails,'partnerId':selectedOption.value,'productId':selectedProduct.value,'brandId':selectedBrand.value,'modelId':selectedModel.value,'colorId':selectedColor.value}
         try{
             const response = await sellerInfo(completeDetail)
             // console.log(response.data)
@@ -142,11 +144,11 @@ export default function SellerInventory(){
                                options={partnerList}
                                placeholder="Select Vendor"
                                value={selectedOption}
-                               onChange={(selected) => {setSelectedOption(selected);console.log(selectedOption)}}
+                               onChange={(selected) => {setSelectedOption(selected);console.log(selected)}}
                                isClearable
                             />
                             <Form.Group>
-                                <Form.Control disabled className="ms-2" value={selectedOption?.value||""} />
+                                <Form.Control disabled className="ms-2" value={selectedOption?.gst||""} />
                             </Form.Group>
                     </Col>
                 </Row>
@@ -259,6 +261,7 @@ export default function SellerInventory(){
                     <Button variant='primary' className='mt-3' type='submit' onClick={handleAdd}>Add</Button>
                 </Form>
             </Container>
+            <SellerInventoryListing />
         </>
     )
 }
