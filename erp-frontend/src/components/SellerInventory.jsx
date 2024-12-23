@@ -144,7 +144,7 @@ export default function SellerInventory(){
                                options={partnerList}
                                placeholder="Select Vendor"
                                value={selectedOption}
-                               onChange={(selected) => {setSelectedOption(selected);console.log(selected)}}
+                               onChange={(selected) => {setSelectedOption(selected)}}
                                isClearable
                             />
                             <Form.Group>
@@ -160,7 +160,7 @@ export default function SellerInventory(){
                                 options={productList}
                                 placeholder="Select Product"
                                 value={selectedProduct}
-                                onChange={(selected) => {setSelectedProduct(selected);console.log(selectedProduct)}}
+                                onChange={(selected) => {setSelectedProduct(selected)}}
                                 onCreateOption={(newValue) => {handleCreate(newValue,createProduct,setProductList,{idKey:'product_id',nameKey:'product_name'},setSelectedProduct)}}
                                 isClearable
                             />
@@ -261,7 +261,7 @@ export default function SellerInventory(){
                     <Button variant='primary' className='mt-3' type='submit' onClick={handleAdd}>Add</Button>
                 </Form>
             </Container>
-            <SellerInventoryListing />
+            <SellerInventoryListing id={selectedOption?.value||null}/>
         </>
     )
 }

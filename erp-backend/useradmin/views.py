@@ -47,7 +47,7 @@ class userLoginViewSet(viewsets.ViewSet):
         email = request.data.get('email')
         password = request.data.get('password')
         user = authenticate(request,email=email,password=password)
-        print(AdminUser.objects.filter(email_id=email).exists())
+        # print(AdminUser.objects.filter(email_id=email).exists())
         if user is not None:
             refresh = RefreshToken.for_user(user)
             return Response({
@@ -68,7 +68,7 @@ class addPartnersViewSet(viewsets.ViewSet):
     def create(self, request):
         # Copy and convert request data keys to snake_case
         partner_details = request.data.copy()
-        print("Original Partner Details:", partner_details)
+        # print("Original Partner Details:", partner_details)
 
         partner_details_snake_case = {}
         for key, value in partner_details.items():
@@ -77,11 +77,11 @@ class addPartnersViewSet(viewsets.ViewSet):
             else:    
                 partner_details_snake_case[self.camel_to_snake(key)]= value 
         
-        print("Converted Partner Details:", partner_details_snake_case)
+        # print("Converted Partner Details:", partner_details_snake_case)
 
         # Add created_by field
         partner_details_snake_case['created_by'] = request.user.id  # Use authenticated user's ID
-        print("Partner Details with Created By:", partner_details_snake_case)
+        # print("Partner Details with Created By:", partner_details_snake_case)
 
         # Serialize and save
         partner_serializer = TransactionPartnerSerializer(data=partner_details_snake_case)
@@ -89,7 +89,7 @@ class addPartnersViewSet(viewsets.ViewSet):
             partner_serializer.save()
             return Response({'success': 'Partner is added successfully'}, status=status.HTTP_201_CREATED)
         else:
-            print("Serializer Errors:", partner_serializer.errors)
+            # print("Serializer Errors:", partner_serializer.errors)
             return Response(partner_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -98,7 +98,7 @@ class getPartnersViewSet(viewsets.ViewSet):
     def list(self,request):
         sellerObj = TransactionPartner.objects.all()
         result = TransactionPartnerSerializer(sellerObj,many=True)
-        print(result.data)
+        # print(result.data)
         return Response(result.data,status=status.HTTP_200_OK)
 
 

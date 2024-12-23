@@ -100,6 +100,11 @@ export const sellerInfo = (completeDetail) => {
     return axiosInstance.post('inventory/addSellerInventory/',completeDetail);
 };
 
+//Post Request for getting a seller inventory info
+export const sellerInventoryInfo = (id) => {
+    return axiosInstance.post('inventory/getSellerInventoryList/',id);
+};
+
 //Get Request for getting the Colors
 export const getColors = () => {
     return axiosInstance.get('product/getColor/');

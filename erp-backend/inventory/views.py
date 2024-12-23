@@ -2,11 +2,12 @@ from django.shortcuts import render, get_object_or_404
 from rest_framework import viewsets,status
 from rest_framework.response import Response
 from .models import SellerInventory
+from .serializers import SellerInventorySerializer
 
 class addSellerInventoryViewSet(viewsets.ViewSet):
     def create(self,request):
         try:
-            print(request.data.copy())
+            # print(request.data.copy())
             product_id = request.data.get('productId')
             brand_id = request.data.get('brandId')
             model_id = request.data.get('modelId')
@@ -65,3 +66,11 @@ class addSellerInventoryViewSet(viewsets.ViewSet):
                 'error': str(e)
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+class getSellerInventoryListViewSet(viewsets.ViewSet):
+    def create(self,request):
+        id = request.data.get('id')
+        print("idid",id)
+        vendorObjs = SellerInventory.objects.filter(partner_id_id=id)
+        vendorSerializer = SellerInventorySerializer(vendorObjs,many=True)
+        print(vendorSerializer.data)
+        return Response(vendorSerializer.data,status=status.HTTP_200_OK)

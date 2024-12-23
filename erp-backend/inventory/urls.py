@@ -5,6 +5,7 @@ from . import views
 router = DefaultRouter()
 
 router.register(r'addSellerInventory', views.addSellerInventoryViewSet,basename='addSellerInventory')
+router.register(r'getSellerInventoryList',views.getSellerInventoryListViewSet,basename='getSellerInventoryList')
 
 urlpatterns = []
 urlpatterns+=router.urls
